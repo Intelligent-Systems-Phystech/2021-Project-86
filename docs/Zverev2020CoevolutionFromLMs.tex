@@ -1,0 +1,128 @@
+\documentclass[12pt, twoside]{article}
+\usepackage{jmlda}
+\newcommand{\hdir}{.}
+
+\begin{document}
+\English
+
+\title
+	[] % short title for page headings, not necessary if a full title fits the headings
+    { Learning co-evolution information with natural language processing for protein folding problem} % full title
+\author
+	[F.\,S.~Author] % short list of the authors (<= 3) for page headings, is necessary only if the full list does not fit the headings
+	{F.\,S.~Author, F.\,S.~Co-Author, and F.\,S.~Name} % full list of the authors, presented in the table of contetns of the issue
+    [Egor Zverev$^1$, Sergei Grudinin$^2$, and Ilia Igashov$^{1, 2}$] % list of the authors presented in the title page of the article, is necessary only if it differs from the full list of the authors in braces, i.e. '{' and '}'
+\email
+    {zverev.eo@phystech.edu; sergei.grudinin@inria.fr; igashov.is@phystech.edu}
+\thanks
+    {}
+\organization
+    {$^1$Organization, address;
+     $^2$Organization, address}
+\abstract
+    {Protein fold recognition is one of the most important problems in bioinformatics. Most of the techniques aimed to solve the problem usually begin by building protein sequence descriptors. One of the most significant parts of such descriptors is co-evolution information which computation is based on Multiple Sequence Alignments (MSA). This technique requires significant computational efforts, moreover, it does not guarantee precise results since it fully relies on finite databases. Besides, this method fails for sequences with shallow alignment. In this work, we will consider pre-trained language models (LMs)  as a potential alternative to this increasingly time-consuming database search.  In the scope of the protein folding problem, we will  consider  several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based  feature-generation parts with pre-trained LMs.
+
+		
+	\noindent
+    	\textbf{Keywords}: \emph{protein folding; co-evolution, NLP; transformers; }}
+
+
+
+
+%these fields are filled in by the journal editors
+\doi{10.21469/22233792}
+\receivedRus{01.01.2017}
+\receivedEng{January 01, 2017}
+
+\maketitle
+\linenumbers
+
+\section{Introduction}
+\noindent %this command is placed at the beginning of the first sentence of each paragraph/section only.
+Protein fold recognition is crucial for bioinformatics since the connection between amino acid sequence and protein’s structure is revealed by protein folding. The prediction process of protein tertiary structures usually begins by constructing protein sequence descriptors whose essential part is a co-evolution information. This information can be obtained by searching for homologues of the target protein in large databases and further computing multiple sequence alignment (MSA) on it. One of the problems of such an approach is its complexity. Computing MSA is a heavy task. However, it is still good enough to be considered state-of-the-art.
+
+Methods that utilize MSA are based on the fact that usually a mutation of one amino acid leads to mutations of others, causing a phenomena called co-evolution[9]. The problem arises when we’re dealing with the sequences that did not evolve a lot. They will have shallow alignments, i.e. there will be only a few similar sequences. Therefore, information extracted from these alignments will be insignificant. 
+
+In this work, we will consider pre-trained language models (LMs) [13] as a potential alternative to traditional MSA approaches.  In the scope of the protein folding problem, we will  consider  several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based feature-generation parts with pre-trained LMs.
+
+Our main aim is to study the efficiency of pre-trained LMs in application to the protein folding problem.  To start with, we will consider the state-of-the-art method DeepSF [4] which solves the protein fold classification problem.  By replacing its feature-generation part with a pre-trained LM, we will study how NLP approach affects on learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we can do the same with other fold classification algorithms [6, 5] as well as with end-to-end protein structure prediction methods [11, 14].
+
+
+\section{Preparing a manuscript}
+\noindent
+Manuscripts are prepared using \verb'jmlda.sty' style package.
+You are recommended to use \verb'jmlda_rus.bst' and \verb'jmlda_eng.bst' style files for generating bibliography using Bib\TeX.
+
+Visit the \url{http://jmlda.org/?lang=en} website for detailed submission instructions, templates and other information.
+
+Please note that this file must be saved in~\verb'UTF-8' encoding. Where possible select~\verb'UTF-8 without BOM' encoding. 
+To change the encoding please use \verb'Sublime Text' or \verb'Notepad++' text editors.
+
+\section{Structure of the article}
+\noindent
+Divide your article into clearly defined and numbered sections and paragraphs.
+
+\paragraph{Paragraph}
+\noindent
+Sections and paragraphs are numbered and have a brief heading.
+
+%please do not change the name of this section if it is present
+\section{Concluding Remarks}
+This section should provide the summary and explore the significance of the results achieved and list problems not yet solved.
+Results should be clear and concise.
+
+%%%% please specify doi of the cited item if possible, see~\bibitem{article}
+%%%% Crossref doi of the item can be retrieved at http://www.crossref.org/guestquery/
+\begin{thebibliography}{99}
+
+
+
+% \bibitem{book}
+% 	\BibAuthor{Goossens,~M., F. Mittelbach, and A.~Samarin}. 1994.
+% 	\BibTitle{The \LaTeX\ companion}.
+% 	2nd ed.
+% 	Reading, MA: Addison-Wesley. 528 p.
+
+% \bibitem{article}
+% 	\BibAuthor{Zagurenko,~A.\,G., V.\,A.~Korotovskikh, A.\,A.~Kolesnikov, A.\,V.~Timonov, and D.\,V.~Kardymon}. 2008.
+% 	Tekhniko-ekonomicheskaya optimizatsiya dizayna gidrorazryva plasta
+% 	[Technical and economic optimization of the design of hydraulic fracturing].
+% 	\BibJournal{Neftyanoe Khozyaystvo} [Oil Industry] 11(1):54--57.
+% 	\BibDoi{10.3114/S187007708007}. (In Russian)
+
+% \bibitem{webArticle}
+% 	\BibAuthor{Blaga,~P.\,A.} 2007.
+% 	Commutative Diagrams with XY-pic II. Frames and Matrices.
+% 	\BibJournal{PracTEX J.}  4.
+% 	Available at: \BibUrl{https://tug.org/pracjourn/2007-1/blaga/blaga.pdf}
+%     (accessed February 20, 2007).
+
+% \bibitem{webResource}
+% 	XYpic.
+% 	Available at: \BibUrl{http://akagi.ms.u-tokyo.ac.jp/input9.pdf}
+% 	(accessed April 09, 2015).
+
+% \bibitem{inproceedingsRus}
+% 	\BibAuthor{Usmanov,~T.\,S., A.\,A.~Gusmanov, I.\,Z.~Mullagalin, R.\,Yu.~Mukhametshina, A.\,N.~Chervyakova, and A.\,V.~Sveshnikov.} 2007.
+% 	Osobennosti proektirovaniya razrabotki mestorozhdeniy s primeneniem gidrorazryva plasta
+% 	[Features of the design of field development with the use of hydraulic fracturing].
+% 	\BibJournal{6th Symposium (International) ``New Energy Saving Subsoil Technologies and the
+% 	Increasing of the Oil and Gas Impact'' Proceedings}.
+% 	Moscow:~Publisher. 267--272. (In Russian)
+	   	
+% \bibitem{inproceedingsEng}
+%     \BibAuthor{Author,~N.} 2009.
+%     Paper title.
+%     \BibJournal{10th Conference (International) on Any Science Proceedings}.
+%     Place of publication: Publisher. 111--122.
+	
+% \bibitem{techreport}
+% 	\BibAuthor{Lambert,~P.} 1993.
+%   	\BibTitle{The title of the work}.
+%   	Place of publication:~The institution that published.  Report~2.
+  	     	
+\end{thebibliography}
+
+
+
+\end{document}
