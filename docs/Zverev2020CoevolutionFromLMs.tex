@@ -41,11 +41,11 @@
 \noindent %this command is placed at the beginning of the first sentence of each paragraph/section only.
 Protein fold recognition is crucial for bioinformatics since the connection between amino acid sequence and protein’s structure is revealed by protein folding. The prediction process of protein tertiary structures usually begins by constructing protein sequence descriptors whose essential part is a co-evolution information. This information can be obtained by searching for homologues of the target protein in large databases and further computing multiple sequence alignment (MSA) on it. One of the problems of such an approach is its complexity. Computing MSA is a heavy task. However, it is still good enough to be considered state-of-the-art.
 
-Methods that utilize MSA are based on the fact that usually a mutation of one amino acid leads to mutations of others, causing a phenomena called co-evolution[9]. The problem arises when we’re dealing with the sequences that did not evolve a lot. They will have shallow alignments, i.e. there will be only a few similar sequences. Therefore, information extracted from these alignments will be insignificant. 
+Methods that utilize MSA are based on the fact that usually a mutation of one amino acid leads to mutations of others, causing a phenomena called co-evolution \cite{co-evolution}. The problem arises when we’re dealing with the sequences that did not evolve a lot. They will have shallow alignments, i.e. there will be only a few similar sequences. Therefore, information extracted from these alignments will be insignificant. 
 
-In this work, we will consider pre-trained language models (LMs) [13] as a potential alternative to traditional MSA approaches.  In the scope of the protein folding problem, we will  consider  several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based feature-generation parts with pre-trained LMs.
+In this work, we will consider pre-trained language models (LMs) \cite{Elnaggar} as a potential alternative to traditional MSA approaches.  In the scope of the protein folding problem, we will  consider  several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based feature-generation parts with pre-trained LMs.
 
-Our main aim is to study the efficiency of pre-trained LMs in application to the protein folding problem.  To start with, we will consider the state-of-the-art method DeepSF [4] which solves the protein fold classification problem.  By replacing its feature-generation part with a pre-trained LM, we will study how NLP approach affects on learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we can do the same with other fold classification algorithms [6, 5] as well as with end-to-end protein structure prediction methods [11, 14].
+Our main aim is to study the efficiency of pre-trained LMs in application to the protein folding problem.  To start with, we will consider the state-of-the-art method DeepSF \cite{DeepSF} which solves the protein fold classification problem.  By replacing its feature-generation part with a pre-trained LM, we will study how NLP approach affects on learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we can do the same with other fold classification algorithms\cite{Villegas, DeepFrag} as well as with end-to-end protein structure prediction methods \cite{Kandathil, Xu2020.10.12.336859}.
 
 
 \section{Preparing a manuscript}
@@ -69,11 +69,14 @@ Sections and paragraphs are numbered and have a brief heading.
 %please do not change the name of this section if it is present
 \section{Concluding Remarks}
 This section should provide the summary and explore the significance of the results achieved and list problems not yet solved.
-Results should be clear and concise.
+Results should be clear and concise. 
 
 %%%% please specify doi of the cited item if possible, see~\bibitem{article}
 %%%% Crossref doi of the item can be retrieved at http://www.crossref.org/guestquery/
-\begin{thebibliography}{99}
+\bibliographystyle{plain}
+\bibliography{Zverev2020CoevolutionFromLMs}
+
+%begin{thebibliography}{99}
 
 
 
@@ -121,7 +124,7 @@ Results should be clear and concise.
 %   	\BibTitle{The title of the work}.
 %   	Place of publication:~The institution that published.  Report~2.
   	     	
-\end{thebibliography}
+%end{thebibliography}
 
 
 
