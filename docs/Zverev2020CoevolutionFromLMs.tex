@@ -20,11 +20,11 @@
     {$^1$Organization, address;
      $^2$Organization, address}
 \abstract
-    {Protein fold recognition is one of the most important problems in bioinformatics. Most of the techniques aimed to solve the problem usually begin by building protein sequence descriptors. One of the most significant parts of such descriptors is co-evolution information which computation is based on Multiple Sequence Alignments (MSA). This technique requires significant computational efforts, moreover, it does not guarantee precise results since it fully relies on finite databases. Besides, this method fails for sequences with shallow alignment. In this work, we will consider pre-trained language models (LMs)  as a potential alternative to this increasingly time-consuming database search.  In the scope of the protein folding problem, we will  consider  several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based  feature-generation parts with pre-trained LMs.
+    {Many problems in bioinformatics are related to protein folding. Most of the techniques aimed to solve such problems usually begin by building protein sequence descriptors. One of the most significant parts of such descriptors is co-evolution information which computation is based on Multiple Sequence Alignments (MSA). This technique requires significant computational efforts, moreover, it does not guarantee precise results since it fully relies on finite databases. Besides, this method fails for sequences with shallow alignment. In this work, we will consider pre-trained language models (LMs)  as a potential alternative to this increasingly time-consuming database search.  Specifically, our main focus is fold classification problem. We will examine several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based  feature-generation parts with pre-trained LMs.
 
 		
 	\noindent
-    	\textbf{Keywords}: \emph{protein folding; co-evolution, NLP; transformers; }}
+    	\textbf{Keywords}: \emph{fold classification; co-evolution, NLP; transformers; BERT;  }}
 
 
 
@@ -39,13 +39,18 @@
 
 \section{Introduction}
 \noindent %this command is placed at the beginning of the first sentence of each paragraph/section only.
-Protein fold recognition is crucial for bioinformatics since the connection between amino acid sequence and protein’s structure is revealed by protein folding. The prediction process of protein tertiary structures usually begins by constructing protein sequence descriptors whose essential part is a co-evolution information. This information can be obtained by searching for homologues of the target protein in large databases and further computing multiple sequence alignment (MSA) on it. One of the problems of such approach is its complexity. Computing MSA is a heavy task. However, it is still good enough to be considered state-of-the-art.
+Protein properties are determined by its shape which is specified by its amino acid sequence \cite{cellbiology}. Therefore it is important to learn how to analyze this sequence.
+Any analysis usually begins by constructing protein sequence descriptors whose essential part is a co-evolution information. This information can be obtained by searching for homologues of the target protein in large databases and further computing multiple sequence alignment (MSA) on it. 
 
-Methods that utilize MSA are based on the fact that usually a mutation of one amino acid leads to mutations of others, causing a phenomena called co-evolution \cite{co-evolution}. The problem arises when we’re dealing with the sequences that did not evolve a lot. They will have shallow alignments, i.e. there will be only a few similar sequences. Therefore, information extracted from these alignments will be insignificant. 
+ Co-evolution-based methods assume that a mutation of one amino acid very often leads to mutations of others. Therefore given an amino acid sequence it is natural to look for other similar sequences. That is usually performed with MSA \cite{co-evolution}. The problem arises when we’re dealing with the sequences that did not evolve a lot. They will have shallow alignments, i.e. there will be only a few similar sequences. Therefore, information extracted from these alignments will be insignificant. 
 
-In this work, we will consider pre-trained language models (LMs) \cite{Elnaggar} as a potential alternative to traditional MSA approaches.  In the scope of the protein folding problem, we will  consider  several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based feature-generation parts with pre-trained LMs.
+Besides, computing MSA is a heavy task. Moreover, alignment databases are finite. If for a given sequence there are no matches in the database, MSA-based methods fail to produce reliable results. 
 
-Our main aim is to study the efficiency of pre-trained LMs in application to the protein folding problem.  To start with, we will consider the state-of-the-art method DeepSF \cite{DeepSF} which solves the protein fold classification problem.  By replacing its feature-generation part with a pre-trained LM, we will study how NLP approach affects on learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we can do the same with other fold classification algorithms\cite{Villegas, DeepFrag} as well as with end-to-end protein structure prediction methods \cite{Kandathil, Xu2020.10.12.336859}.
+In this work, we will consider pre-trained language models (LMs)  \cite{Elnaggar} as a potential alternative to traditional MSA approaches. It is assumed that protein sequences are not random \cite{evolution-not-random}, that there is logic in amino acids structure. Therefore, a set of all amino acids could be seen as a language with complicated inner rules. With the invention of BERT \cite{bert} it has become possible to learn the structure of any abstract language. It is natural to assume that by learning amino acids structure, BERT will be able to implicitly learn co-evolution information.
+
+Our main aim is to study the efficiency of pre-trained LMs in application to the fold classification problem.  To start with, we will consider the state-of-the-art method DeepSF \cite{DeepSF} which solves the protein fold classification problem.  By replacing its MSA-based feature-generation part with a pre-trained LM, we will study how NLP approach affects on learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we can do the same with other fold classification algorithms \cite{Villegas, DeepFrag}
+as well as with end-to-end protein structure prediction methods \cite{Kandathil, Xu2020.10.12.336859}.
+
 
 
 \section{Preparing a manuscript}
