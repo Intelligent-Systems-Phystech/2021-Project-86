@@ -53,15 +53,39 @@ as well as with end-to-end protein structure prediction methods \cite{Kandathil,
 
 
 
-\section{Preparing a manuscript}
+\section{Problem statement}
+\paragraph{General description}
 \noindent
-Manuscripts are prepared using \verb'jmlda.sty' style package.
-You are recommended to use \verb'jmlda_rus.bst' and \verb'jmlda_eng.bst' style files for generating bibliography using Bib\TeX.
+Proteins that share similarities in their structure are  divided into classes -- folds \cite{Schaeffer2011}. In this work we investigate a fold classification problem.  
 
-Visit the \url{http://jmlda.org/?lang=en} website for detailed submission instructions, templates and other information.
+We use the following notation: $S$ is a set of all known classes, $X$ is a set of all proteins with known folds and  $f: X \rightarrow S$ is a mapping between proteins and their classes. 
 
-Please note that this file must be saved in~\verb'UTF-8' encoding. Where possible select~\verb'UTF-8 without BOM' encoding. 
-To change the encoding please use \verb'Sublime Text' or \verb'Notepad++' text editors.
+Suppose, $x \not\in X$ is a protein with unknown fold. We aim to build a model capable of either classifying $x$ as an element of one of the present classes, extending $f$ on the set $X \cup \{x\}$ or concluding that $x$ does not share enough similarities with any of known classes. 
+
+\paragraph{Data}
+\noindent
+We use SCOP2 \cite{SCOP2FST, SCOP2SND} dataset. It contains information about proteins whose structure is already known. All the proteins in the database have classes assigned to them (folds).  At present, there are 1501 known folds \cite{SCOP2SND}. 
+
+In SCOP2 proteins are represented by their amino acid sequences. Each sequence is stored as a string in the 20 letter alphabet and an ID. The length of the string varies from one protein to another. Search by ID allows database users to extract information about target proteins, including their fold classes. 
+
+\paragraph{Baseline solution}
+\noindent
+Our solution is a modification of the DeepSF \cite{DeepSF} method. The designers of DeepSF use PSI-BLAST\cite{PSIBLAST} to generate features from MSA  as well as SCRATCH \cite{SCRATCH} to extract secondary structure (3 classes) and solvent accessibility (2 classes).  In the core of this classification method PSI-BLAST is used during the first stage of prediction \cite{SCRATCH}. 
+
+Hoe et al. then use these features as an input to the deep convolutional neural network. The depth of CNN used in DeepSF is 10. The output of the model is a vector of fold probabilities. Fold with the maximal probability is accepted as a target protein fold. 
+
+\paragraph{Proposed solution}
+\noindent
+
+DeepSF feature generation is entirely based on MSA. The main point of this work is to suggest another approach to feature generation which is independent of MSA. 
+
+We apply BERT to the language of amino acids. We take the representation of acid sequences BERT creates as a new set of features. Then we train DeepSF model on these features
+
+It shall be noted that we do not reject co-evolution information in our research. Instead of directly applying MSA we let BERT learn information about amino acid language. We suppose that the model learns evolution information implicitly.
+
+\paragraph{Evaluation}
+\noindent
+We use standard cross-validation procedure to compute accuracy of our model. We then compare it to the accuracy score of DeepSF method based on MSA feature generation as well as several other state-of-the-art techniques. 
 
 \section{Structure of the article}
 \noindent
