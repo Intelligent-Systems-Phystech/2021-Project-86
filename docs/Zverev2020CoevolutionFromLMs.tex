@@ -1,5 +1,10 @@
 \documentclass[12pt, twoside]{article}
 \usepackage{jmlda}
+\usepackage{graphicx} 
+\graphicspath{ {./figures/} }
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{subfig}
 \newcommand{\hdir}{.}
 \renewcommand{\baselinestretch}{1.35}
 
@@ -55,14 +60,19 @@ In this work, we analyse pre-trained language models (LMs)  \cite{Elnaggar} as a
 Our main aim is to study the efficiency of pre-trained LMs in application to the fold classification problem.  To start with, we consider the state-of-the-art method DeepSF \cite{DeepSF}. It solves the protein fold classification problem.  By replacing its MSA-based feature-generation part with a pre-trained LM, we study how NLP approach affects learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we perform the same with other fold classification algorithms \cite{Villegas, DeepFrag}
 as well as with end-to-end protein structure prediction methods \cite{Kandathil, Xu2020.10.12.336859}.
 
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure1.pdf}
+    \caption{The main framework}
+\end{figure}
 \section{Problem statement}
 \paragraph{General description}
 \noindent
 Proteins that share similarities in their structure are  divided into classes -- folds \cite{Schaeffer2011}. In this work we investigate a fold classification problem.  
 
-We use the following notation: $Y$ is a set of all known classes, $X$ is a set of all proteins with known folds and  $f: X \rightarrow Y$ is a mapping between proteins and their classes. 
+We use the following notation: $Y$ is a set of all known classes, $A$ is a set of all proteins with known folds and  $f: A \rightarrow Y$ is a mapping between proteins and their classes. 
 
-Suppose, $x \not\in X$ is a protein with unknown fold. We aim to build a model capable of classifying $x$ as an element of one of the present classes, extending $f$ on the set $X \cup \{x\}$. 
+Suppose, $x \not\in A$ is a protein with unknown fold. We aim to build a model capable of classifying $x$ as an element of one of the present classes, extending $f$ on the set $A \cup \{x\}$. 
 
 \paragraph{Feature generation }
 \noindent
@@ -122,22 +132,34 @@ $L_{Y_{val}, x_{val}}(\hat{w}) \rightarrow \max\limits_{\theta, D}$
 \paragraph{Overview}
 \noindent
 
-The problem of determining proteins' class is separated into two parts: fist, we encode amino acid sequences as $D$-dimensional descriptors, then these descriptors are used to train a prediction model.  
+The problem of determining proteins' class is separated into two parts: first, we encode amino acid sequences as $D$-dimensional descriptors, then these descriptors are used to train a prediction model.  
 
 \section{Computational experiment}
-\paragraph{General description}
-\noindent
-Proteins that share similarities in their structure are  divided into classes -- folds \cite{Schaeffer2011}. In this work we investigate a fold classification problem.  
 
-We use the following notation: $S$ is a set of all known classes, $X$ is a set of all proteins with known folds and  $f: X \rightarrow S$ is a mapping between proteins and their classes. 
-
-Suppose, $x \not\in X$ is a protein with unknown fold. We aim to build a model capable of either classifying $x$ as an element of one of the present classes, extending $f$ on the set $X \cup \{x\}$ or concluding that $x$ does not share enough similarities with any of known classes. 
 
 \paragraph{Data}
 \noindent
-We use SCOP2 \cite{SCOP2FST, SCOP2SND} dataset. It contains information about proteins whose structure is already known. All the proteins in the database have classes assigned to them (folds).  At present, there are 1501 known folds \cite{SCOP2SND}. 
+We use SCOP2 \cite{SCOP2FST, SCOP2SND} dataset. It contains information about proteins whose structure is already known. All the proteins in the database have classes assigned to them (folds).  At present, there are 1501 known folds \cite{SCOP2SND}. The number of proteins contained in each fold is less than 50 for most of the folds. Detailed histogram is represented in Figures 2, 3. 
 
-In SCOP2 proteins are represented by their amino acid sequences. Each sequence is stored as a string in the 20 letter alphabet and an ID. The length of the string varies from one protein to another. Search by ID allows database users to extract information about target proteins, including their fold classes. 
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure2.pdf}
+    \caption{Protein count histogram}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure3.pdf}
+    \caption{Protein count zoomed histogram}
+\end{figure}
+
+In SCOP2 proteins are represented by their amino acid sequences. Each sequence is stored as a string in the 20 letter alphabet and an ID. The length of the string varies mostly between 25 and 500 from protein to another. The length diagram is represented on Figure 2. Search by ID allows database users to extract information about target proteins, including their fold classes. 
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure4.pdf}
+    \caption{Sequence length histogram}
+\end{figure}
 
 \paragraph{Baseline solution}
 \noindent
@@ -150,7 +172,7 @@ Hoe et al. then use these features as an input to the deep convolutional neural 
 
 DeepSF feature generation is entirely based on MSA. The main point of this work is to suggest another approach to feature generation which is independent of MSA. 
 
-We apply BERT to the language of amino acids. We take the representation of acid sequences BERT creates as a new set of features. Then we train DeepSF model on these features
+We apply BERT to the language of amino acids. We take the representation of acid sequences BERT creates as a new set of features. Then we train DeepSF model on these features.
 
 It shall be noted that we do not reject co-evolution information in our research. Instead of directly applying MSA we let BERT learn information about amino acid language. We suppose that the model learns evolution information implicitly.
 
