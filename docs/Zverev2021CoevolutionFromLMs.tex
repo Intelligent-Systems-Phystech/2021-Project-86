@@ -186,7 +186,7 @@ We use standard cross-validation procedure to compute accuracy of our model. We 
 Though the data is available for 1517 classes, during the experiments we approached the problem slowly. First, we solved a classification problem for 2 classes, then for 10 classes.
 
 \paragraph{First experiment}
-\noindent In this experiment we took two balanced classes. They contain 66 and 80 elements respectively. The distributions of their sequence length are similar. They are displayed on figure 5. We used a model that consists of two essential layers - 30-max-pooling followed by a linear layer. Using this architecture we achieved 93\% score on validation data. The architecture and training curves are represented on figure 6.  
+\noindent In this experiment we took two balanced classes. They contain 66 and 80 elements respectively. The distributions of their sequence length are similar. They are displayed on figure 5. We used a model that consists of two essential layers - 30-max-pooling followed by a linear layer. Using this architecture we achieved 93\% score on validation data. The architecture and training curves are represented on figures 6 and 7.  
 \begin{figure}[htp]
     \centering
     \includegraphics[width=10cm]{figures/figure5.pdf}
@@ -214,6 +214,11 @@ We decided to use exactly the same architecture for 10-fold classification probl
     \caption{Experiment 2 training curve}
 \end{figure}
 
+
+\section{Results}
+\noindent
+
+Conducted experiments show that BERT managed to capture the structure of the protein sequence language. We managed to solve 10-fold classification problem with 93\% accuracy.
 %please do not change the name of this section if it is present
 
 %%%% please specify doi of the cited item if possible, see~\bibitem{article}
