@@ -134,12 +134,13 @@ $L_{Y_{val}, x_{val}}(\hat{w}) \rightarrow \max\limits_{\theta, D}$
 
 The problem of determining proteins' class is separated into two parts: first, we encode amino acid sequences as $D$-dimensional descriptors, then these descriptors are used to train a prediction model.  
 
+
 \section{Computational experiment}
 
 
 \paragraph{Data}
 \noindent
-We use SCOP2 \cite{SCOP2FST, SCOP2SND} dataset. It contains information about proteins whose structure is already known. All the proteins in the database have classes assigned to them (folds).  At present, there are 1501 known folds \cite{SCOP2SND}. The number of proteins contained in each fold is less than 50 for most of the folds. Detailed histogram is represented in Figures 2, 3. 
+We use SCOP2 \cite{SCOP2FST, SCOP2SND} dataset. It contains information about proteins whose structure is already known. All the proteins in the database have classes assigned to them (folds).  At present, there are 1517 known folds \cite{SCOP2SND}. The number of proteins contained in each fold is less than 50 for most of the folds. Detailed histogram is represented in Figures 2, 3. 
 
 \begin{figure}[htp]
     \centering
@@ -161,6 +162,7 @@ In SCOP2 proteins are represented by their amino acid sequences. Each sequence i
     \caption{Sequence length histogram}
 \end{figure}
 
+
 \paragraph{Baseline solution}
 \noindent
 Our solution is a modification of the DeepSF \cite{DeepSF} method. The designers of DeepSF use PSI-BLAST\cite{PSIBLAST} to generate features from MSA  as well as SCRATCH \cite{SCRATCH} to extract secondary structure (3 classes) and solvent accessibility (2 classes).  In the core of this classification method PSI-BLAST is used during the first stage of prediction \cite{SCRATCH}. 
@@ -180,18 +182,39 @@ It shall be noted that we do not reject co-evolution information in our research
 \noindent
 We use standard cross-validation procedure to compute accuracy of our model. We then compare it to the accuracy score of DeepSF method based on MSA feature generation as well as several other state-of-the-art techniques. 
 
-\section{Structure of the article}
-\noindent
-Divide your article into clearly defined and numbered sections and paragraphs.
+\section{Experiment result}
+Though the data is available for 1517 classes, during the experiments we approached the problem slowly. First, we solved a classification problem for 2 classes, then for 10 classes.
 
-\paragraph{Paragraph}
+\paragraph{First experiment}
+\noindent In this experiment we took two balanced classes. They contain 66 and 80 elements respectively. The distributions of their sequence length are similar. They are displayed on figure 5. We used a model that consists of two essential layers - 30-max-pooling followed by a linear layer. Using this architecture we achieved 93\% score on validation data. The architecture and training curves are represented on figure 6.  
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure5.pdf}
+    \caption{Sequence lengths of two folds}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure6.pdf}
+    \caption{Experiment 1 architecture}
+\end{figure}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure7.pdf}
+    \caption{Experiment 1 training curve}
+\end{figure}
+
+\paragraph{Second experiment}
 \noindent
-Sections and paragraphs are numbered and have a brief heading.
+We decided to use exactly the same architecture for 10-fold classification problem. Our experiments show that increasing the k hyper-parameter in k-max-pooling layer improves the quality of the model. We chose k = 60. It allowed us to reach 95\% accuracy on validation and 93\% accuracy on test samples. The training curve is represented on figure 8. 
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=10cm]{figures/figure8.pdf}
+    \caption{Experiment 2 training curve}
+\end{figure}
 
 %please do not change the name of this section if it is present
-\section{Concluding Remarks}
-This section should provide the summary and explore the significance of the results achieved and list problems not yet solved.
-Results should be clear and concise. 
 
 %%%% please specify doi of the cited item if possible, see~\bibitem{article}
 %%%% Crossref doi of the item can be retrieved at http://www.crossref.org/guestquery/
