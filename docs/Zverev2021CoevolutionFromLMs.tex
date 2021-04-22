@@ -25,7 +25,7 @@
     {$^1$Organization, address;
      $^2$Organization, address}
 \abstract
-    {Co-evolution information is crucial for building protein sequence descriptors. Its computation is traditionally based on Multiple Sequence Alignments. Applications of MSA are limited, for instance, it fails for sequences with shallow alignment. This work investigates pre-trained language models as potential alternatives to MSA. The main focus is on fold classification problem. The authors examine several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based  feature-generation parts with pre-trained LMs. They compare language models and MSA in their ability to extract sequence evolution information. The performance of models is compared using TOP1-accuracy score.
+    {Co-evolution information is crucial for building protein sequence descriptors. Its computation is traditionally based on Multiple Sequence Alignment. Applications of MSA are limited, for instance, it fails for sequences with shallow alignment. This work investigates pre-trained language models as potential alternatives to MSA and focuses on fold classification problem. The authors examine several  state-of-the-art  methods  and  modify  them  by  replacing  MSA-based  feature-generation parts with pre-trained LMs. The performance of the models is evaludated using TOP1-accuracy score.
 
 		
 	\noindent
@@ -48,16 +48,18 @@
 
 
 
-Protein properties are determined by its shape, which is specified by its amino acid sequence \cite{cellbiology}. Therefore it is important to learn how to analyze this sequence.
-The first step is constructing protein sequence descriptors. Ideally the descriptors contain co-evolution information[...]. This information is obtained by searching for homologues of the protein in large databases and computing multiple sequence alignment (MSA) on it. This model requires significant computational effort. Alignment databases are finite. If for a given sequence there are no matches in the database, MSA-based methods fail to produce reliable results. 
+Protein properties are determined by its shape, which is defined by its amino acid sequence \cite{cellbiology}. Therefore it is important to learn how to analyze this sequence.
+The first step is constructing protein sequence descriptors. Ideally, the descriptors contain co-evolution information\cite{DeepSF, msa_transform}. This information is obtained by searching for homologues of the protein in large databases and computing multiple sequence alignment (MSA) on it. This model requires significant computational effort. Alignment databases are finite. If for a given sequence there are no matches in the database, MSA-based methods fail to produce reliable results. 
  It does not guarantee precise results since it fully relies on finite databases. MSA-based methods fail for sequences with shallow alignment.
 
- Co-evolution-based methods assume[...] that a mutation of one amino acid leads to mutations of others. Therefore, given an amino acid sequence it is natural to look for other similar sequences. That is performed with MSA \cite{co-evolution}. This method fails when we are dealing with the sequences that did not evolve a lot. They have shallow alignments. That means there are only a few similar sequences in the database. Therefore, information extracted from these alignments is insignificant. 
+ Co-evolution-based methods assume \cite{co-evolution} that a mutation of one amino acid leads to mutations of others. Therefore, given an amino acid sequence, it is natural to look for other similar sequences. That is performed with MSA \cite{co-evolution}. This method fails when we are dealing with the sequences that did not evolve a lot. They have shallow alignments. That means there are only a few similar sequences in the database. Therefore, information extracted from these alignments is poor. 
 
-The authors propose to analyse pre-trained language models (LMs)  \cite{Elnaggar} as potential alternative to traditional MSA-based models. It is assumed that protein sequences are not random \cite{evolution-not-random}, There is structure in amino acid sequences. Therefore, a set of all amino acids could be seen as a language with complicated inner rules. BERT \cite{bert} learns the structure of any abstract language. We assume that by learning amino acids structure, BERT will be able to implicitly learn co-evolution information.
+The authors propose to analyse pre-trained language models (LMs)  \cite{Elnaggar} as potential alternative to traditional MSA-based models. It is assumed that protein sequences are not random \cite{evolution-not-random}. There is structure in amino acid sequences. Therefore, a set of all amino acids could be seen as a language with complicated inner rules. BERT \cite{bert} learns the structure of any abstract language. We assume that by learning amino acids structure, BERT will be able to implicitly learn co-evolution information.
 
-Our main aim is to study the efficiency of pre-trained LMs in application to the fold classification problem.  To start with, we study the state-of-the-art method DeepSF \cite{DeepSF}. It solves the protein fold classification problem.  By replacing its MSA-based feature-generation part with a pre-trained LM, we study how NLP approach affects learning the fold-related information.  The whole framework is schematically represented in Figure 1. Further, we perform the same with other fold classification algorithms \cite{Villegas, DeepFrag}
-as well as with end-to-end protein structure prediction methods \cite{Kandathil, Xu2020.10.12.336859}.
+Our main aim is to study the efficiency of pre-trained LMs in application to the fold classification problem.  To start with, we study the state-of-the-art method DeepSF \cite{DeepSF}. It solves the protein fold classification problem.  By replacing its MSA-based feature-generation part with a pre-trained LM, we study how NLP approach helps to learn fold-related information.  The whole framework is schematically represented in Figure 1. 
+
+% Further, we perform the same with other fold classification algorithms \cite{Villegas, DeepFrag}
+% as well as with end-to-end protein structure prediction methods \cite{Kandathil, Xu2020.10.12.336859}.
 
 \begin{figure}[htp]
     \centering
@@ -81,22 +83,19 @@ Suppose, $x \not\in A$ is a protein with unknown fold. We aim to build a model c
 
 In the fold classification problem $x_i$ represents $i$-th protein description in  $D$-dimensional space. However, initially each protein is described by its amino acid sequence. Let $\Sigma$ be the 20-letter alphabet of acid sequences.  
 
-There is a set $A = \{a_i \in \Sigma^+\}_{i = 1}^n$ of protein sequences. Let $$g_{\theta, D}: \Sigma^+ \rightarrow \mathbb{R}^D$$ be an embedding of space of acid sequences into $D$-dimensional set of descriptors. These embeddings are parameterized  by $\theta$.
+There is a set $A = \{a_i \in \Sigma^+\}_{i = 1}^n$ of protein sequences, where $\Sigma^+$ is a set of all possible non-empty sequences. Let $$f: \Sigma^+ \rightarrow \mathbb{R}^D$$ be an embedding of space of acid sequences into $D$-dimensional set of descriptors.
 
-We separate $A$ into training and validation set. Training set is used to formulate fold classification problem. Validation set is used to formulate feature generation problem. 
 
-$$A = A_{\text{train}} \cup A_{\text{val}}$$
-
-Protein sequence descriptors are generated using $g_{\theta, D}$ as $x_i = g_{\theta, D}(a_i)$ 
+Protein sequence descriptors are generated using $f$ as $x_i = f(a_i)$ 
 
 \paragraph{Fold classification problem}
 \noindent
 
-Suppose there is a given set of pairs $S = \{ (x_i, Y_i)\}_{i = 1}^n$ where $ x_i \in \mathbb{R}^D$ denotes the sequence descriptor of $i$-th protein and $$Y_i \in \mathbb{Y} = \{ (1, 0, ..., 0), (0, 1, 0, ..., 0) .... (0, ..., 0, 1) \}$$ denotes the i-th protein known class, $|\mathbb{Y}| = m$
+Suppose there is a given set of pairs $S = \{ (x_i, Y_i)\}_{i = 1}^n$ where $ x_i \in \mathbb{R}^D$ denotes the sequence descriptor of $i$-th protein and $$Y_i \in \mathbb{Y} = \{ (1, 0, ..., 0), (0, 1, 0, ..., 0) .... (0, ..., 0, 1) \}$$ denotes the i-th protein known class represented as one-hot vector, $|\mathbb{Y}| = m$.
 
-We separate $S$ into training and validation set. Training set is used to formulate fold classification problem.  
+\noindent $S$ is separated into training, validation and test set. 
 
-$$S = S_{\text{train}} \cup S_{\text{val}}$$
+$$S = S_{\text{train}} \cup S_{\text{val}}  \cup S_{\text{test}}$$
 
 Let $W = \{(w_1, ..., w_m)| w_i \in \mathbb{R}^D\}$ be a space of parameters for classification models. Let $g_w$ be a model parameterized by $w$.
 We use $e_k$ to denote a vector with 1 on $k$-th position, with zeros on all other positions
@@ -110,35 +109,22 @@ e_{k} = &
 \]
 We work under the following assumption:  
 
-$$P_w(Y = e_k| x) = \frac{exp(x^Tw_k)}{\sum_j exp(x^t w_j)}$$
+$$P_w(Y = e_k| x) = \frac{exp(x^{\top} w_k)}{\sum_j exp(x^{\top} w_j)}$$
 Let $p_{w, x}(y)$ be discrete density of $Y$, $L_{Y, x}(w)$ be likelihood function of $Y$.  
 
 $$p_{w, x}(y) = \prod_{d = 1}^{m} (P_w(Y = e_d| x))^{y_d}$$, 
 
-$$L_{Y, x}(w) = \prod_{i = 1}^{n} p_{w, x}(Y_i)$$
+$$L_{K}(w) = \prod_{i = 1}^{m} p_{w, x_i}(Y_i) \text{    for  } K = \{ (x_i, Y_i)\}_{i = 1}^m$$
 
 Given $S_{train}$, classification problem is a maximization of likelihood on training set: 
 
-$$L_{train}(w) = L_{Y_{train}, x_{train}}(w) \rightarrow \max\limits_{w \in W}$$
+$$ L_{S_{\text{train}}}(w) \rightarrow \max\limits_{w \in W}$$
 
-\paragraph{Feature generation problem}
-\noindent
-
-For fixed $\theta, D$ and descriptors $x_i$ we denote $$\hat{w} = \argmax\limits_{w \in W} L_{Y_{train}, x_{train}}(w).$$. 
-
-Feature generation problem is a maximization of likelihood function on validation set:  
-
-$$L_{Y_{val}, x_{val}}(\hat{w}) \rightarrow \max\limits_{\theta, D}$$
-
-\paragraph{Overview}
-\noindent
-
-The problem of determining proteins' class is separated into two parts: first, we encode amino acid sequences as $D$-dimensional descriptors, then these descriptors are used to train a prediction model.  
 
 
 \section{Computational experiment}
 
-The goal of our experiments is to verify that BERT is capable of extracting important features from the given amino acid sequences. For this we will use pre-trained AlBert\cite{ProtBert} model to generate these features and then train our own neural networks to solve fold classification problem. 
+The goal of our experiments is to verify that BERT is able to extract important features from the given amino acid sequences. For this we will use pre-trained AlBert\cite{ProtBert} model to generate these features and then train our own neural networks to solve fold classification problem. 
 
 \paragraph{Data}
 \noindent
@@ -169,20 +155,24 @@ In SCOP2 proteins are represented by their amino acid sequences. Each sequence i
 \noindent
 Our solution is a modification of the DeepSF \cite{DeepSF} method. The designers of DeepSF use PSI-BLAST\cite{PSIBLAST} to generate features from MSA  as well as SCRATCH \cite{SCRATCH} to extract secondary structure (3 classes) and solvent accessibility (2 classes).  In the core of this classification method PSI-BLAST is used during the first stage of prediction \cite{SCRATCH}. 
 
-Hoe et al. then use these features as an input to the deep convolutional neural network. The depth of CNN used in DeepSF is 10. The output of the model is a vector of fold probabilities. Fold with the maximal probability is accepted as a target protein fold. 
+DeepSF authors then use these features as an input to the deep convolutional neural network. The depth of CNN used in DeepSF is 10. The output of the model is a vector of fold probabilities. Fold with the maximal probability is accepted as a target protein fold. 
 
 \paragraph{Proposed solution}
 \noindent
 
 DeepSF feature generation is entirely based on MSA. The main point of this work is to suggest another approach to feature generation which is independent of MSA. 
 
-We apply BERT to the language of amino acids. We take the representation of acid sequences BERT creates as a new set of features. Then we train DeepSF model on these features.
+We apply BERT to the language of amino acids. We take the representation of acid sequences BERT creates as a new set of features. Then we train a model similar to DeepSF on these features.
 
 It shall be noted that we do not reject co-evolution information in our research. Instead of directly applying MSA we let BERT learn information about amino acid language. We suppose that the model learns evolution information implicitly.
 
 \paragraph{Evaluation}
 \noindent
-We use standard cross-validation procedure to compute accuracy of our model. We then compare it to the accuracy score of DeepSF method based on MSA feature generation as well as several other state-of-the-art techniques. 
+% We use standard cross-validation procedure to compute accuracy of our model. We then compare it to the accuracy score of DeepSF method based on MSA feature generation as well as several other state-of-the-art techniques. 
+
+We use TOP-1 accuracy score on $S_{\text{test}} = = \{ (x_i, Y_i)\}_{i = 1}^l$ to evaluate the performance of the model. Let g be the prediction mode. The score as computed as 
+
+$$acc(g) = \sum_{i = 0}^{l} I_{g(x_i) = Y_i}$$
 
 \section{Experiment details}
 Though the data is available for 1517 classes, during the experiments we approached the problem slowly. First, we solved a classification problem for 2 classes, then for 10 classes.
@@ -221,20 +211,20 @@ The second experiment is an extension of the first one. Its goal is to validate 
     \caption{Experiment 2 training curve}
 \end{figure}
 
+\section{Results}
+\noindent
 
+Conducted experiments show that BERT successfully captured the structure of the protein sequence language. We managed to solve 10-fold classification problem with 93\% accuracy.
+
+Therefore, BERT is able to extract crucial information from the sequences of amino acids.
 
 \section{Feature work}
 In this paper we investigated only classification problem for at most classes. In the future we would like to extend our experiments for 1517-fold classification problem and compare the results.
 
-Here we used BERT as a "black box". We generated features with BERT and used them as an input for another model. The desired improvement here would be to learn how to extract attention mechanisms from BERT, possibly gaining more co-evolution information in the process.
+Here we used BERT as a "black box". We generated features with BERT and used them as an input for another model. The desired improvement here would be to learn how to leverage attention mechanisms from BERT directly, possibly gaining more co-evolution information in the process.
 
 
-\section{Results}
-\noindent
 
-Conducted experiments show that BERT successfully captured the structure of the protein sequence language (or at least its part). We managed to solve 10-fold classification problem with 93\% accuracy.
-
-Therefore, BERT is capable of extracting crucial information from the sequences of amino acids.
 
 %please do not change the name of this section if it is present
 
